@@ -1,119 +1,78 @@
 <!DOCTYPE html>
 <html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Leaderboard</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      text-align: center;
+    }
+    h1 {
+      margin-top: 20px;
+    }
+    table {
+      width: 50%;
+      margin: 0 auto;
+      border-collapse: collapse;
+      background-color: #fff;
+    }
+    th, td {
+      padding: 10px;
+      border: 1px solid #ddd;
+    }
+    th {
+      background-color: #f2f2f2;
+    }
+    tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+  </style>
+</head>
+<body>
 
-    <!-- Custom PreHead code is injected here -->
-    
+  <h1>Leaderboard</h1>
+  
+  <table id="leaderboard">
+    <thead>
+      <tr>
+        <th>Player Name</th>
+        <th>Score</th>
+      </tr>
+    </thead>
+    <tbody>
+      <!-- Leaderboard data will be inserted here -->
+    </tbody>
+  </table>
+  
+  <script>
+    // The URL of your Google Apps Script Web App that serves leaderboard data
+    var url = "https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec";  // Replace with your actual URL
 
-    <head>
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name ="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-        <meta charset="utf-8"/>
+    // Fetch the leaderboard data
+    fetch(url)
+      .then(response => response.json())
+      .then(data => {
+        var tableBody = document.getElementById('leaderboard').getElementsByTagName('tbody')[0];
+        tableBody.innerHTML = '';  // Clear the table body
 
-        <!-- Builtin injector for disabling cache -->
-        <meta http-equiv="pragma" content="no-cache"/>
+        // Sort data by score in descending order
+        data.sort((a, b) => b.score - a.score);
 
-        <!-- Set the title bar of the page -->
-        <title>Created with GameMaker</title>
+        // Populate the table with leaderboard data
+        data.forEach(function(row) {
+          var newRow = tableBody.insertRow();
+          var nameCell = newRow.insertCell(0);
+          var scoreCell = newRow.insertCell(1);
+          nameCell.textContent = row.name;
+          scoreCell.textContent = row.score;
+        });
+      })
+      .catch(error => console.error('Error fetching leaderboard data:', error));
+  </script>
 
-        <!-- Custom PreStyle code is injected here -->
-        
-
-        <!-- Set the background colour of the document -->
-        <style>
-            body {
-                background: #0;
-                color: #cccccc;
-                margin: 0px;
-                padding: 0px;
-                border: 0px;
-            }
-
-            canvas {
-                image-rendering: optimizeSpeed;
-                -webkit-interpolation-mode: nearest-neighbor;
-                -ms-touch-action: none;
-                touch-action: none;
-                margin: 0px;
-                padding: 0px;
-                border: 0px;
-            }
-            :-webkit-full-screen #canvas {
-                width: 100%;
-                height: 100%;
-            }
-            :-webkit-full-screen {
-                width: 100%;
-                height: 100%;
-            }
-            
-            /* Custom Runner Styles */
-            div.gm4html5_div_class {
-                margin: 0px;
-                padding: 0px;
-                border: 0px;
-            }
-            div.gm4html5_login {
-                padding: 20px;
-                position: absolute;
-                border: solid 2px #000000;
-                background-color: #404040;
-                color:#00ff00;
-                border-radius: 15px;
-                box-shadow: #101010 20px 20px 40px;
-            }
-            div.gm4html5_cancel_button {
-                float: right;
-            }
-            div.gm4html5_login_button {
-                float: left;
-            }
-            div.gm4html5_login_header {
-                text-align: center;
-            }
-            /* END - Custom Runner Styles */
-            
-        </style>
-
-        <!-- Custom PostStyle code is injected here -->
-        
-
-        <!-- Builtin injector for injecting flurry analytics code -->
-        
-    </head>
-
-    <!-- Custom PostHead code is injected here -->
-    
-
-    <!-- Custom PreBody code is injected here -->
-    
-
-    <body>
-        <div class="gm4html5_div_class" id="gm4html5_div_id">
-            
-            <!-- Builtin injector for splash screen -->
-            
-
-            <!-- Create the canvas element the game draws to -->
-            <canvas id="canvas" width="1920" height="1080" >
-                <p>Your browser doesn't support HTML5 canvas.</p>
-            </canvas>
-        </div>
-
-        <!-- Run the game code -->
-        <script type="text/javascript" src="html5game/IsanctuaryGame.js?cachebust=1509824317"></script>
-
-        <!-- Builtin injector for injecting runner path -->
-        
-
-        <script>window.onload = GameMaker_Init;</script>
-
-        <!-- Builtin injector for injecting google analytics code -->
-        
-
-    </body>
-
-    <!-- Custom PostBody code is injected here -->
-    
+</body>
 </html>
